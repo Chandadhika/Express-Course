@@ -4,3 +4,8 @@
 ## Download setup
 * npm init -y
 * npm i express
+
+## Creat Folders
+* gitignore
+*>* added node_modules, .env folder
+* env
