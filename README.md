@@ -20,3 +20,12 @@ repository-နာမည်ကို Express-Course-ဖြင့် သတ်မ�
 
 ## server-ကို စမ်းသပ်မောင်းခြင်း
 * node server
+
+## Rout-ကို တည်ဆောက်ခြင်း
+    cddk.get('/', (req, res) => {
+    res.send('Hello World');
+    });
+
+    cddk.get('/', (req, res) => {
+    res.send('<h1>Hello World</h1>');
+    });
