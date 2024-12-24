@@ -1,25 +1,22 @@
-# First setup
-* Create new Repositry's name Express-Course
+# Repository-ကို စတင်တည်ဆောက်ခြင်း
+repository-နာမည်ကို Express-Course-ဖြင့် သတ်မှတ်ထားသည်
 
-## Download setup
+## install လုပ်ခြင်း
 * npm init -y
 * npm i express
 
-## Creat Folders
+## File တည်ဆောက်ခြင်း
 * gitignore
-*>* added node_modules, .env folder
 * env
+*>* တည်ဆောက်ထားတဲ့ ဖိုင်ထဲကို node_modules, .env folder-များ ထည့်သွင်းထားခြင်း
 
-## Create js
-* server.js
-added under Codes
-= "const express = require('express');
-
+## js-ကို တည်ဆောက်ခြင်း
+* နာမည်ကို server.js သတ်မှတ်ထားသည်
+၎င်းjs-ထဲကို အောက်ပါကုဒ်တို့ကို ရေးသားခြင်း
+        "const express = require('express');
         const cddk = express();
-
         const port = 5050;
-
         cddk.listen(port, () => console.log(`Server is running on http://localhost${port}`));"
 
-## Test run server on terminal
+## server-ကို စမ်းသပ်မောင်းခြင်း
 * node server
