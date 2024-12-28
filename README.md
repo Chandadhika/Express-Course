@@ -292,3 +292,70 @@ const errorHandler = express('./midleware/error');
 
 // Error handler
 cddk.use(errorHandler);
+
+## changed code
+- error.js
+        const errorHandler = (err, req, res, next) => {
+
+        if (err.status) {
+                res.status(err.status).json({ msg: err.message });
+        } else {
+                res.status(500).json({ msg: err.message });
+        }
+        };
+
+## create notFound js
+- midleware folder
+-- create notFound.js
+        >>const notFound = (req, res, next) => {
+        const error = new Error('Not Found');
+        error.status = 404;
+        next(error);
+        };
+
+        // export default notFound;
+        module.exports = notFound;
+
+- server.js
+        >> // notFound
+        const notFound = express('./midleware/notFound');
+        // import notFound from './midleware/notFount';
+
+        cddk.use(notFound);
+
+## install
+- npm install colors
+
+## create folder
+- controller folder
+-- controller.js
+        >>// @desc Get all posts
+        // @route GET /api/posts
+
+        const getPosts = (req, res, next) => {
+        const limit = parseInt(req.query.limit);
+
+        // နံပါတ်ရှိရင် ရှိတဲ့နံပါတ်က 0ထက် ကြီးရင် 
+        if (!isNaN(limit) && limit > 0) {
+        return res.status(200).json(posts.slice(0, limit));
+        } else {
+                res.status(200).json(posts);
+        }
+        };
+
+        // @desc single post
+        // @desc /api/posts/:id
+        const getPost = (req, res, next) => {
+        const id = parseInt(req.params.id);
+        const post = posts.find((post) => post.id === id);
+
+        if (!post) {
+        const error = new Error(`A post with the id of ${id} was not found`);
+        error.status = 404;
+        return next(error);
+        } 
+                res.status(200).json(post);
+        };
+
+        // @desc single post
+        // @desc /api/posts/:id

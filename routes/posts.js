@@ -1,5 +1,5 @@
-const express = require('express');
-// import express from 'express';
+// const express = require('express');
+import express from 'express';
 
 const router = express.Router();
 
@@ -35,7 +35,7 @@ let posts = [
 
 // limit
 // status(200)
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     const limit = parseInt(req.query.limit);
 
     // နံပါတ်ရှိရင် ရှိတဲ့နံပါတ်က 0ထက် ကြီးရင် 
@@ -60,13 +60,14 @@ router.get('/:id', (req, res, next) => {
 
     if (!post) {
        const error = new Error(`A post with the id of ${id} was not found`);
+       error.status = 404;
        return next(error);
     } 
         res.status(200).json(post);
  });
 
 //  Create new post
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     // console.log(req.body);
     const newPost = {
             id: posts.length + 1,
@@ -74,14 +75,16 @@ router.post('/', (req, res) => {
     };
 
     if (!newPost.title) {
-        return res.status(400).json({ msg: `please include a title`});
+        const error = new Error(`Please include a title`);
+       error.status = 404;
+       return next(error);
     }
     posts.push(newPost);
     res.status(201).json(posts);
 });
 
 // Update Post
-router.put('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
 
@@ -106,7 +109,7 @@ router.delete('/:id', (req, res) => {
     res.status(200).json(posts);
 });
 
-//  export default router;
+ export default router;
 
-module.exports = router;
+// module.exports = router;
 

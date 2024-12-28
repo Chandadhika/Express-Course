@@ -1,22 +1,26 @@
 // node_module တွင်ရှိ express ကို လှမ်းခေါ်ယူသုံးဖို့ရန် တည်ဆောက်ခြင်း
-const express = require('express');
-// import express from 'express';
+// const express = require('express');
+import express from 'express';
 
 // path ကို ခေါ်ယူခြင်း
-const path = require('path');
-// import path from 'path';
+// const path = require('path');
+import path from 'path';
 
 // posts link
-const posts = require('./routes/posts');
-// import posts from './routes/posts';
+// const posts = require('./routes/posts');
+import posts from './routes/posts.js';
 
 // logger
-const logger = express('./midleware/logger');
-// import logger from './midleware/logger';
+// const logger = express('./midleware/logger');
+import logger from './midleware/logger.js';
 
 // error
-const errorHandler = express('./midleware/error');
-// import error from './midleware/error';
+// const errorHandler = express('./midleware/error.js');
+import errorHandler from './midleware/error.js';
+
+// notFound
+// const notFound = express('./midleware/notFound');
+import notFound from './midleware/notFount.js';
 
 const port = process.env.PORT || 5000;
 
@@ -35,6 +39,9 @@ cddk.use(logger);
 
 //  routes link
 cddk.use('/api/posts', posts);
+
+// notFound
+cddk.use(notFound);
 
 // Error handler
 cddk.use(errorHandler);
