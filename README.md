@@ -213,3 +213,82 @@ res.status(404) Error
        // Body parser middleware
         cddk.use(express.json());
         cddk.use(express.urlencoded({ extended: false }));
+
+
+## Update Post
+- posts.js
+        router.put('/:id', (req, res) => {
+        const id = parseInt(req.params.id);
+        const post = posts.find((post) => post.id === id);
+
+        if (!post) {
+        return res.status(404)
+        .json({ msg: `A post with the id of ${id} was not found`});
+        }
+        post.title = req.body.title;
+        res.status(200).json(posts);
+                })
+
+## Delete Post
+- posts.js
+        router.delete('/:id', (req, res) => {
+        const id = parseInt(req.params.id);
+        const post = posts.find((post) => post.id === id);
+
+        if (!post) {
+                return res.status(404)
+                .json({ msg: `A post with the id of ${id} was not found`});
+        }
+        posts = posts.filter((post) => post.id !== id);
+        res.status(200).json(posts);
+        })
+
+## midleware folder
+- added logger.js
+      >  const logger = (req, res, next) => {
+        console.log(
+        `${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl}`
+        );
+        next();
+        };
+
+        export default logger;
+
+- server.js
+        > // logger
+        const logger = express('./midleware/logger');
+        // import logger from './midleware/logger';
+
+        / midleware logger
+        cddk.use(logger);
+
+## Error code and next function
+- posts.js
+        >>router.get('/:id', (req, res, next) => {
+        const id = parseInt(req.params.id);
+        const post = posts.find((post) => post.id === id);
+
+        if (!post) {
+        const error = new Error(`A post with the id of ${id} was not found`);
+        return next(error);
+        } 
+                res.status(200).json(post);
+        });
+
+## errorHandler 
+- midleware folder
+> create error.js file
+>> added code
+        const errorHandler = (err, req, res, next) => {
+    res.status(404).json({ msg: 'Error'});
+        };
+
+        export default errorHandler;
+
+- server.js
+>> // error
+const errorHandler = express('./midleware/error');
+// import errorHandler from './midleware/error';
+
+// Error handler
+cddk.use(errorHandler);

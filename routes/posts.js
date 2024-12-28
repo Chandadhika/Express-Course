@@ -1,5 +1,5 @@
-// const express = require('express');
-import express from 'express';
+const express = require('express');
+// import express from 'express';
 
 const router = express.Router();
 
@@ -32,6 +32,7 @@ let posts = [
 //     console.log(req.query);
 //     res.json(posts);
 // });
+
 // limit
 // status(200)
 router.get('/', (req, res) => {
@@ -39,7 +40,7 @@ router.get('/', (req, res) => {
 
     // နံပါတ်ရှိရင် ရှိတဲ့နံပါတ်က 0ထက် ကြီးရင် 
     if (!isNaN(limit) && limit > 0) {
-        res.status(200).json(posts.slice(0, limit));
+       return res.status(200).json(posts.slice(0, limit));
     } else {
         res.status(200).json(posts);
     }
@@ -53,15 +54,15 @@ router.get('/', (req, res) => {
 //     });
 
 // find
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
 
     if (!post) {
-        res.status(404).json({ msg: `A post with the id of ${id} was not found`});
-    } else {
+       const error = new Error(`A post with the id of ${id} was not found`);
+       return next(error);
+    } 
         res.status(200).json(post);
-    }
  });
 
 //  Create new post
@@ -73,13 +74,39 @@ router.post('/', (req, res) => {
     };
 
     if (!newPost.title) {
-            return res.status(400).json({msg: `please include a title`});
+        return res.status(400).json({ msg: `please include a title`});
     }
     posts.push(newPost);
     res.status(201).json(posts);
 });
 
- export default router;
+// Update Post
+router.put('/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const post = posts.find((post) => post.id === id);
 
-// module.exports = router;
+    if (!post) {
+        return res.status(404)
+        .json({ msg: `A post with the id of ${id} was not found`});
+    }
+    post.title = req.body.title;
+    res.status(200).json(posts);
+});
+
+// Delete Post
+router.delete('/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const post = posts.find((post) => post.id === id);
+
+    if (!post) {
+        return res.status(404)
+        .json({ msg: `A post with the id of ${id} was not found`});
+    }
+    posts = posts.filter((post) => post.id !== id);
+    res.status(200).json(posts);
+});
+
+//  export default router;
+
+module.exports = router;
 
