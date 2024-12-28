@@ -77,3 +77,139 @@ npm run dev
         cddk.get('/api/posts', (req, res) => {
         res.json(posts);
         });
+
+## install solfware
+        Postman software install
+        click New HTTP Request
+
+## folder တည်ဆောက်ခြင်း
+.env > PORT = 7005
+
+## server.js-တွင် ကုဒ်ကို ထည့်ခြင်း
+    ထည့်တိုးမှု=  const port = process.env.PORT || 5000;
+
+ပြောင်းလဲမှု= cddk.listen(port, () => console.log(`Server is running on http://localhost:${port}`));
+
+## scriptတွင် ပြောင်းလဲခြင်း
+       "dev": "node --watch server"
+       မှ
+        "dev": "node --watch --env-file=.env server" သို့ ပြောင်းလဲခြင်း
+
+## Get single post ပြောင်းလဲ
+        // Get single post
+        cddk.get('/api/posts/:id', (req, res) => {
+        console.log(req.params);
+        res.json(posts);
+        });
+
+        // filter
+        cddk.get('/api/posts/:id', (req, res) => {
+        const id = parseInt(req.params.id);
+        res.json(posts.filter((post) => post.id === id));
+        });
+
+## query
+cddk.get('/api/posts', (req, res) => {
+    console.log(req.query);
+    res.json(posts);
+});
+
+## limit
+cddk.get('/api/posts', (req, res) => {
+    const limit = parseInt(req.query.limit);
+    
+    if (!isNaN(limit) && limit > 0) {
+        res.json(posts.slice(0, limit));
+    } else {
+        res.json(posts);
+    }
+});
+
+## postman-တွင် စမ်းသပ်ခြင်း
+http://localhost:7005/api/posts?limit=1,2,3
+
+
+## filter to find
+// filter
+        cddk.get('/api/posts/:id', (req, res) => {
+        const id = parseInt(req.params.id);
+        res.json(posts.filter((post) => post.id === id));
+        });
+
+// find
+cddk.get('/api/posts/:id', (req, res) => {
+        const id = parseInt(req.params.id);
+        const post = posts.filter((post) => post.id === id);
+
+// ပြဿနာကို ရှာဖွေဖော်ထုတ်ခြင်း
+        if (!post) {
+            res.status(404).json({ msg: ` A post with the id of ${id} was not found`});
+        } else {
+            res.status(200).json(post);
+        }
+        });
+
+## NOTE
+res.status(200) OK
+res.status(404) Error
+
+
+## folder တည်ဆောက်ခြင်း
+- routes folder
+> posts.js file
+>>      const express = require('express');
+        const router = express.Router();
+
+        (cut from server.js codes paste to posts.js)
+
+        export default router;
+
+- server.js 
+        >// posts link
+        const posts = require('./routes/posts');
+
+        //  routes link
+        cddk.use('/api/posts', posts);
+
+## Delete
+- posts.js
+>> delete (api/posts)
+
+## change export line
+- posts.js
+>> export default router change to module.exports = router;
+
+## added script
+- package.json
+>> "type": "module"
+
+## change const to import
+- server.js 
+>> import express from 'express';
+>> import path from 'path';
+>> import posts from './routes/posts.js';
+
+- posts.js
+>> import express from 'express';
+>> export default router;
+
+## Create new post
+- posts.js
+        router.post('/', (req, res) => {
+        // console.log(req.body);
+        const newPost = {
+                id: posts.length + 1,
+                title: req.body.title,
+        };
+
+        if (!newPost.title) {
+                return res.status(400).json({msg: `please include a title});
+        }
+        posts.push(newPost);
+        res.status(201).json(posts);
+        });
+
+- server.js
+       // Body parser middleware
+        cddk.use(express.json());
+        cddk.use(express.urlencoded({ extended: false }));
