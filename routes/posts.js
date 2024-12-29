@@ -12,8 +12,7 @@ const router = express.Router();
 
 
 
-// setup static folder
-// cddk.use(express.static(path.join(__dirname, 'public')));
+
 
 // // Rout ကို တည်ဆောက်ခြင်း
 // cddk.get('/', (req, res) => {
@@ -59,7 +58,8 @@ router.put('/:id', updatePost);
 // Delete Post
 router.delete('/:id', deletePost);
 
- export default router;
+ 
+export default router;
 
 // module.exports = router;
 

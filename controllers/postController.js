@@ -34,7 +34,7 @@ export const getPost = (req, res, next) => {
  };
 
  // @desc   Get new post
-// @desc    /api/posts/:id
+// @desc    POST /api/posts/:id
 export const createPost = (req, res, next) => {
     // console.log(req.body);
     const newPost = {
@@ -52,7 +52,7 @@ export const createPost = (req, res, next) => {
 };
 
 // @desc   Update post
-// @desc    /api/posts/:id
+// @desc    PUT /api/posts/:id
 export const updatePost =(req, res, next) => {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
@@ -66,7 +66,7 @@ export const updatePost =(req, res, next) => {
 };
 
 // @desc   Delete post
-// @desc    /api/posts/:id
+// @desc    DELETE /api/posts/:id
 export const deletePost = (req, res) => {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
@@ -77,4 +77,4 @@ export const deletePost = (req, res) => {
     }
     posts = posts.filter((post) => post.id !== id);
     res.status(200).json(posts);
-}
+};

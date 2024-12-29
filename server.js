@@ -6,6 +6,9 @@ import express from 'express';
 // const path = require('path');
 import path from 'path';
 
+// url
+import { fileURLToPath } from 'url';
+
 // posts link
 // const posts = require('./routes/posts');
 import posts from './routes/posts.js';
@@ -24,6 +27,10 @@ import notFound from './midleware/notFount.js';
 
 const port = process.env.PORT || 5000;
 
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // server port နံပါတ် သတ်မှတ်ပေးခြင်း
 // const port = 5000;
 
@@ -36,6 +43,12 @@ cddk.use(express.urlencoded({ extended: false }));
 
 // midleware logger
 cddk.use(logger);
+
+// setup static folder
+// cddk.use(express.static(path.join(__dirname, 'public')));
+
+// setup static folder
+cddk.use(express.static(path.join(__dirname, 'public')));
 
 //  routes link
 cddk.use('/api/posts', posts);
